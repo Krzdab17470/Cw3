@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using APBD_Cw3.DAL;
 using APBD_Cw3.Models; //!!!
 using Microsoft.AspNetCore.Mvc;
 
@@ -82,47 +83,70 @@ namespace APBD_Cw3.Controllers
     }
     */
 
-    
-//ZAD7======================================
-[ApiController]
-[Route("api/students")]
-//https://localhost:44362/api/students/
+    /*
+ //ZAD7======================================
+ [ApiController]
+ [Route("api/students")]
+ //https://localhost:44362/api/students/
 
-public class StudentsController : ControllerBase
-    //ta klasa dziedziczy po ControllerBase
-{
-    [HttpPut("{id}")]
-    public IActionResult putUpdate(int id)
+ public class StudentsController : ControllerBase
+     //ta klasa dziedziczy po ControllerBase
+ {
+     [HttpPut("{id}")]
+     public IActionResult putUpdate(int id)
+     {
+         if (id == 1)
+             {
+                 //Response.StatusCode = "201";
+                 //StatusCode(201);
+                 //return new HttpResponseMessage(HttpStatusCode.NotModified);
+                 return Ok("Aktualizacja dokończona");
+
+             }
+             else
+             {
+                 return Ok("Blad aktualizacji!");
+             }
+
+     }
+
+
+     [HttpDelete("{id}")]
+     public IActionResult delDat(int id)
+     {
+         if (id == 1)
+         {
+             return Ok("Usuwanie dokonczone.");
+
+         }
+         else
+         {
+             return Ok("Blad usuwania!");
+         }
+
+     }
+ }
+ */
+
+    //ZAD8======================================
+    [ApiController]
+    [Route("api/students")]
+    //https://localhost:44362/api/students/
+
+    public class StudentsController : ControllerBase
     {
-        if (id == 1)
-            {
-                //Response.StatusCode = "201";
-                //StatusCode(201);
-                //return new HttpResponseMessage(HttpStatusCode.NotModified);
-                return Ok("Aktualizacja dokończona");
+        private readonly IDbService _dbService;
 
-            }
-            else
-            {
-                return Ok("Blad aktualizacji!");
-            }
-        
-    }
-
-
-    [HttpDelete("{id}")]
-    public IActionResult delDat(int id)
-    {
-        if (id == 1)
+        public StudentsController(IDbService dbService)
         {
-            return Ok("Usuwanie dokonczone.");
-
-        }
-        else
-        {
-            return Ok("Blad usuwania!");
+            _dbService = dbService;
         }
 
+        [HttpGet]
+
+        public IActionResult GetStudents(string orderBy)
+        {
+            return Ok(_dbService.GetStudents());
+        }
     }
-}
 }
